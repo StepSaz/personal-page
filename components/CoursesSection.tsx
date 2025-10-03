@@ -20,7 +20,7 @@ export default function CoursesSection() {
         <div className="mb-12">
           <span className="text-sm font-medium text-gray-500 tracking-wider uppercase">My Services</span>
           <h2 className="text-4xl lg:text-5xl font-bold mt-2 mb-4">
-            What I'm <span className="gradient-text">Offering</span>
+            What I&apos;m <span className="gradient-text">Offering</span>
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600"></div>
         </div>
