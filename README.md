@@ -1,6 +1,25 @@
-# Stepan Sazanavets - Personal Portfolio & Course Platform
+# Stepan Sazanovets - Personal Portfolio & Course Platform
 
 A modern, professional personal website built with Next.js, serving as both a portfolio and course/mentorship platform for Business Analysts.
+
+## 🚀 Live Site
+**[View Live Site](https://your-vercel-url.vercel.app)** (Update with your actual URL)
+
+## 📋 Development Standards
+
+**This project follows strict code quality standards.**
+
+Before contributing, read:
+- **[CODE_STANDARDS.md](./CODE_STANDARDS.md)** - Complete development guidelines
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
+
+### APIT Workflow
+Every change must follow: **Analyze → Plan → Implement → Test**
+
+### Pre-Commit Requirements
+```bash
+npm run validate  # Must pass before committing ✅
+```
 
 ## Features
 
