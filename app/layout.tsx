@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stepan Sazanavets - Business Analyst Portfolio & Courses",
+  title: "Stepan Sazanovets - Business Analyst Portfolio & Courses",
   description: "Business Analyst with over 10 years of IT experience. Offering professional courses and mentorship for aspiring business analysts.",
   keywords: ["Business Analyst", "IT", "Courses", "Mentorship", "ERP", "IoT", "AI"],
-  authors: [{ name: "Stepan Sazanavets" }],
+  authors: [{ name: "Stepan Sazanovets" }],
   openGraph: {
-    title: "Stepan Sazanavets - Business Analyst Portfolio & Courses",
+    title: "Stepan Sazanovets - Business Analyst Portfolio & Courses",
     description: "Business Analyst with over 10 years of IT experience. Offering professional courses and mentorship.",
     type: "website",
     locale: "en_US",

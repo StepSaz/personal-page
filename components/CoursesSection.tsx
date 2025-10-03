@@ -14,15 +14,69 @@ export default function CoursesSection() {
   };
 
   return (
-    <section className="py-16 px-4" id="courses">
-      <div className="max-w-6xl mx-auto">
+    <section className="py-20 px-6 lg:px-12 bg-gray-50" id="courses">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Courses & Mentorship
-        </h2>
+        <div className="mb-12">
+          <span className="text-sm font-medium text-gray-500 tracking-wider uppercase">My Services</span>
+          <h2 className="text-4xl lg:text-5xl font-bold mt-2 mb-4">
+            What I'm <span className="gradient-text">Offering</span>
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+        </div>
 
         {/* Courses Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Mentorship Program - First (Full Width) */}
+          <div className="md:col-span-2">
+            <CourseCard
+              badge="Available Now"
+              badgeColor="accent"
+              title="Mentorship Program"
+              description="Personal guidance for junior and middle business analysts. One-on-one sessions, career advice, and practical skills development."
+              features={["1-on-1 Sessions", "Career Growth"]}
+              available={true}
+              isAccented={true}
+              onPurchase={() => handlePurchase("Mentorship Program")}
+              details={{
+                curriculum: [
+                  "Personalized learning path assessment",
+                  "Resume and portfolio review",
+                  "Interview preparation",
+                  "Real-world problem solving",
+                  "Career planning and goal setting",
+                  "Industry insights and networking",
+                ],
+                outcomes: [
+                  "Accelerate your career growth",
+                  "Build confidence in your BA skills",
+                  "Navigate career transitions",
+                  "Develop a professional network",
+                  "Receive personalized feedback",
+                ],
+                prerequisites: [
+                  "Junior or Middle-level BA position",
+                  "Commitment to regular sessions",
+                  "Willingness to learn and grow",
+                ],
+                materials: [
+                  "Session recordings (optional)",
+                  "Personalized action plans",
+                  "Resource recommendations",
+                  "Templates and frameworks",
+                  "Access to exclusive BA community",
+                ],
+                format: [
+                  "Monthly 1-hour video calls",
+                  "Email support between sessions",
+                  "Flexible scheduling",
+                  "3, 6, or 12-month programs available",
+                  "Group workshop access (optional add-on)",
+                ],
+              }}
+            />
+          </div>
+
           {/* Course 1 */}
           <CourseCard
             badge="Coming Soon"
@@ -121,56 +175,6 @@ export default function CoursesSection() {
               ],
             }}
           />
-
-          {/* Mentorship Program - Full Width */}
-          <div className="md:col-span-2">
-            <CourseCard
-              badge="Available Now"
-              badgeColor="accent"
-              title="Mentorship Program"
-              description="Personal guidance for junior and middle business analysts. One-on-one sessions, career advice, and practical skills development."
-              features={["1-on-1 Sessions", "Career Growth"]}
-              available={true}
-              isAccented={true}
-              onPurchase={() => handlePurchase("Mentorship Program")}
-              details={{
-                curriculum: [
-                  "Personalized learning path assessment",
-                  "Resume and portfolio review",
-                  "Interview preparation",
-                  "Real-world problem solving",
-                  "Career planning and goal setting",
-                  "Industry insights and networking",
-                ],
-                outcomes: [
-                  "Accelerate your career growth",
-                  "Build confidence in your BA skills",
-                  "Navigate career transitions",
-                  "Develop a professional network",
-                  "Receive personalized feedback",
-                ],
-                prerequisites: [
-                  "Junior or Middle-level BA position",
-                  "Commitment to regular sessions",
-                  "Willingness to learn and grow",
-                ],
-                materials: [
-                  "Session recordings (optional)",
-                  "Personalized action plans",
-                  "Resource recommendations",
-                  "Templates and frameworks",
-                  "Access to exclusive BA community",
-                ],
-                format: [
-                  "Monthly 1-hour video calls",
-                  "Email support between sessions",
-                  "Flexible scheduling",
-                  "3, 6, or 12-month programs available",
-                  "Group workshop access (optional add-on)",
-                ],
-              }}
-            />
-          </div>
         </div>
       </div>
     </section>

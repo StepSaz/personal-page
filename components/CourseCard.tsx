@@ -39,25 +39,25 @@ export default function CourseCard({
 
   return (
     <div
-      className={`card bg-base-100 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ${
+      className={`glass rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
         isAccented ? "ring-2 ring-accent" : ""
       }`}
     >
-      <div className="card-body">
+      <div className="p-5 md:p-6">
         {/* Badge */}
         <div className="mb-2">
           <span className={`badge badge-${badgeColor} badge-lg`}>{badge}</span>
         </div>
 
         {/* Title */}
-        <h3 className="card-title text-2xl mb-2">{title}</h3>
+        <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">{title}</h3>
 
         {/* Description */}
-        <p className="text-gray-600 mb-4">{description}</p>
+        <p className="text-sm text-gray-600 mb-4 leading-relaxed">{description}</p>
 
         {/* Price */}
         {price && (
-          <div className="text-4xl font-bold text-primary mb-4">
+          <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
             ${price}
           </div>
         )}
@@ -163,20 +163,22 @@ export default function CourseCard({
         )}
 
         {/* Action Button */}
-        <div className="card-actions justify-end">
+        <div className="mt-4">
           {available ? (
             <button
               onClick={onPurchase}
-              className={`btn ${
-                isAccented ? "btn-accent" : "btn-primary"
-              } btn-block hover:scale-105 transition-transform`}
+              className={`w-full py-3 px-5 rounded-lg font-semibold text-white shadow hover:shadow-md transform hover:scale-105 transition-all duration-300 ${
+                isAccented
+                  ? "bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600"
+                  : "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+              }`}
             >
               {price ? "Purchase Course" : "Learn More"}
             </button>
           ) : (
             <button
               onClick={onNotify}
-              className="btn btn-outline btn-block hover:scale-105 transition-transform"
+              className="w-full py-3 px-5 rounded-lg font-semibold border-2 border-gray-300 text-gray-700 hover:border-primary hover:text-primary hover:bg-primary/5 transform hover:scale-105 transition-all duration-300"
             >
               Notify Me
             </button>
