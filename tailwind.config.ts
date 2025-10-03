@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+const config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -22,9 +22,9 @@ const config: Config = {
     themes: [
       {
         light: {
-          "primary": "#3b82f6",      // blue
-          "secondary": "#a855f7",     // purple
-          "accent": "#fb7185",        // coral/pink
+          "primary": "#3b82f6",
+          "secondary": "#a855f7",
+          "accent": "#fb7185",
           "neutral": "#1f2937",
           "base-100": "#ffffff",
           "info": "#0ea5e9",
@@ -35,5 +35,6 @@ const config: Config = {
       },
     ],
   },
-};
+} satisfies Config;
+
 export default config;
