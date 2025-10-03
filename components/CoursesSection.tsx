@@ -9,8 +9,12 @@ export default function CoursesSection() {
   };
 
   const handlePurchase = (courseTitle: string) => {
-    // This will be implemented later with Stripe integration
-    alert(`Redirecting to checkout for ${courseTitle}...`);
+    if (courseTitle === "Mentorship Program") {
+      window.open("https://www.notion.so/BA-Mentorship-Program-27c9ff0e3a9a811a8393ef7a72a550fe?source=copy_link", "_blank");
+    } else {
+      // This will be implemented later with Stripe integration
+      alert(`Redirecting to checkout for ${courseTitle}...`);
+    }
   };
 
   return (

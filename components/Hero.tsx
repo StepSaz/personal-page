@@ -55,6 +55,7 @@ export default function Hero() {
           {/* Right Content - Image with Stats */}
           <div className="relative">
             <div className="relative z-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/avatar.jpg"
                 alt="Stepan Sazanovets"

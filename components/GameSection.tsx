@@ -2,16 +2,19 @@ export default function GameSection() {
   return (
     <section className="py-20 px-6 lg:px-12" id="game">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="grid lg:grid-cols-2 gap-8 items-center p-10 lg:p-16">
-            <div className="text-white">
-              <div className="text-6xl mb-6">🎮</div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-                Check Out My Game
+        <div
+          className="rounded-3xl overflow-hidden shadow-2xl relative"
+          style={{
+            backgroundImage: "url('/game-bg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center"
+          }}
+        >
+          <div className="relative grid lg:grid-cols-2 gap-8 items-center p-10 lg:p-16">
+            <div className="text-white bg-black/40 backdrop-blur-sm rounded-2xl p-8">
+              <h2 className="text-2xl lg:text-3xl font-bold mb-4">
+                Check out my vibe-coded game!
               </h2>
-              <p className="text-lg mb-8 text-white/90">
-                Emigrant: A visual novel game about immigration. Experience an immersive story-driven adventure.
-              </p>
               <a
                 href="https://stepans-emigrant-game.netlify.app/"
                 target="_blank"
@@ -23,9 +26,6 @@ export default function GameSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>
-            </div>
-            <div className="hidden lg:flex items-center justify-center">
-              <div className="text-9xl opacity-20">🎮</div>
             </div>
           </div>
         </div>
