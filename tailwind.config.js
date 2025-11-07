@@ -10,9 +10,26 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'brand-purple': '#6C5CE7',
+        'brand-turquoise': '#00D1B2',
+        'brand-bg': '#F8F8FB',
+        'brand-bg-alt': '#F1F1F8',
+        'brand-bg-game': '#ECECFF',
+        'brand-hero-from': '#F8F8FB',
+        'brand-hero-to': '#E9E7FF',
       },
       backgroundImage: {
         'gradient-pastel': 'linear-gradient(135deg, #eff6ff 0%, #faf5ff 50%, #fff1f2 100%)',
+        'gradient-hero': 'linear-gradient(180deg, #F8F8FB 0%, #E9E7FF 100%)',
+        'gradient-outro': 'linear-gradient(180deg, #F8F8FB 0%, #6C5CE7 100%)',
+      },
+      borderRadius: {
+        'card': '16px',
+        'card-lg': '20px',
+      },
+      boxShadow: {
+        'card': '0 4px 12px rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 8px 24px rgba(0, 0, 0, 0.1)',
       },
     },
   },
@@ -22,8 +39,8 @@ module.exports = {
     themes: [
       {
         light: {
-          "primary": "#3b82f6",
-          "secondary": "#a855f7",
+          "primary": "#6C5CE7",
+          "secondary": "#00D1B2",
           "accent": "#fb7185",
           "neutral": "#1f2937",
           "base-100": "#ffffff",

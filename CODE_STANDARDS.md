@@ -1,385 +1,397 @@
-# Code Standards & Development Workflow
+# Code Standards
 
-## 🎯 Core Principle
-**Only production-ready code is committed.**
+## Development Workflow: APIT
 
-## 📋 Development Workflow: APIT
+Every task follows the **APIT** methodology:
 
-Every change must follow this four-step process:
+1. **Analyze** - Understand the context, read relevant files, identify patterns
+2. **Plan** - Break down into steps, use TodoWrite for tracking
+3. **Implement** - Write clean, type-safe code following these standards
+4. **Test** - Validate changes with `npm run validate` (type-check, lint, build)
 
-### 1. **ANALYZE** 🔍
-Before writing any code, understand the problem:
-- What is the requirement?
-- What files will be affected?
-- What are the dependencies?
-- Are there any potential side effects?
-- What edge cases need to be handled?
+---
 
-**Example:**
+## Project Structure
+
 ```
-Task: Add a new contact form
-Analysis:
-- Need new component: components/ContactForm.tsx
-- Need API route: app/api/contact/route.ts
-- Dependencies: React Hook Form, email service
-- Edge cases: validation, rate limiting, spam prevention
-```
-
-### 2. **PLAN** 📝
-Create a detailed implementation plan:
-- Break down into small, testable steps
-- Identify reusable components or utilities
-- Plan error handling
-- Consider accessibility
-- Plan testing approach
-
-**Example:**
-```
-Plan:
-1. Create ContactForm component with validation
-2. Add API route with rate limiting
-3. Implement email service integration
-4. Add error handling and user feedback
-5. Test all edge cases
-6. Update documentation
+personal-page/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+├── data/                  # Static data files
+└── public/               # Static assets
 ```
 
-### 3. **IMPLEMENT** 💻
-Write clean, maintainable code following these standards:
+---
 
-#### TypeScript Standards
-- ✅ Always use TypeScript for new files
-- ✅ Define proper interfaces/types
-- ✅ Avoid `any` type
-- ✅ Use strict type checking
+## TypeScript Standards
 
+### Strict Mode
+- `strict: true` in tsconfig.json
+- No `any` types without justification
+- Explicit return types for functions
+- Use TypeScript for all new files (.ts/.tsx)
+
+### Type Definitions
 ```typescript
 // ✅ Good
-interface CourseCardProps {
+interface ServiceCardProps {
   title: string;
-  price: number;
-  available: boolean;
-  onPurchase?: () => void;
+  description: string;
+  icon?: React.ReactNode;
+}
+
+export default function ServiceCard({ title, description, icon }: ServiceCardProps) {
+  return <div>...</div>;
 }
 
 // ❌ Bad
-interface CourseCardProps {
-  title: any;
-  price: any;
-  available: any;
-  onPurchase?: any;
+export default function ServiceCard(props: any) {
+  return <div>...</div>;
 }
 ```
 
-#### React Standards
-- ✅ Use functional components
-- ✅ Use proper hooks (useState, useEffect, etc.)
-- ✅ Extract reusable logic into custom hooks
-- ✅ Use React.memo for expensive components
-- ✅ Escape HTML entities (&apos; not ')
+### Environment Variables
+- Use `process.env.NEXT_PUBLIC_*` for client-side vars
+- Provide fallbacks for optional environment variables
+- Never commit `.env` files
 
 ```typescript
 // ✅ Good
-export default function Hero() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  return (
-    <h1>Hi! I&apos;m Stepan</h1>
-  );
-}
+const url = process.env.NEXT_PUBLIC_BOOKING_URL || "#";
 
 // ❌ Bad
-export default function Hero() {
-  return (
-    <h1>Hi! I'm Stepan</h1>
-  );
+const url = process.env.NEXT_PUBLIC_BOOKING_URL; // Could be undefined
+```
+
+---
+
+## React/Next.js Standards
+
+### Component Structure
+- Use functional components with TypeScript
+- One component per file
+- Default export for components
+- Props interface defined above component
+
+```typescript
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
+export default function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
+  return <button onClick={onClick}>{label}</button>;
 }
 ```
 
-#### Next.js Image Optimization
-- ✅ Use `next/image` instead of `<img>`
-- ✅ Specify width and height
-- ✅ Use proper alt text
+### Server vs Client Components
+- Default to Server Components (Next.js 15 App Router)
+- Use `'use client'` only when needed (event handlers, useState, useEffect)
+- Keep client components minimal
+
+### Naming Conventions
+- **Components**: PascalCase (e.g., `ServiceCard.tsx`)
+- **Files**: PascalCase for components, kebab-case for utilities
+- **Variables/Functions**: camelCase
+- **Constants**: UPPER_SNAKE_CASE
+- **CSS Classes**: Tailwind utilities (no custom classes unless necessary)
+
+---
+
+## Styling Standards
+
+### Tailwind CSS
+- Use Tailwind utility classes exclusively
+- No inline styles or custom CSS unless absolutely necessary
+- Use theme colors defined in `tailwind.config.js`
+- Responsive design: mobile-first approach
 
 ```typescript
 // ✅ Good
-import Image from 'next/image';
-
-<Image
-  src="/avatar.jpg"
-  alt="Stepan Sazanovets"
-  width={200}
-  height={200}
-/>
+<div className="px-6 lg:px-12 pt-20 pb-12">
 
 // ❌ Bad
-<img src="/avatar.jpg" alt="Stepan Sazanovets" />
+<div style={{ padding: '20px' }}>
 ```
 
-#### CSS/Styling Standards
-- ✅ Use Tailwind CSS utility classes
-- ✅ Follow mobile-first approach
-- ✅ Use DaisyUI components when appropriate
-- ✅ Maintain consistent spacing (4, 8, 12, 16, 20, 24)
+### Theme Colors
+- Use semantic color names from config:
+  - `brand-purple`: Primary brand color
+  - `brand-green`: Accent color
+  - Follow existing gradient patterns
+
+---
+
+## Code Quality
+
+### ESLint
+- Follow `next/core-web-vitals` and `next/typescript` configs
+- No ESLint warnings or errors allowed
+- Run `npm run lint` before committing
+
+### Accessibility
+- Use semantic HTML elements
+- Include `alt` text for images
+- Use `aria-*` attributes where appropriate
+- Proper heading hierarchy (h1 → h2 → h3)
+- Keyboard navigation support
 
 ```typescript
-// ✅ Good - Mobile first, consistent spacing
-<div className="p-4 md:p-6 lg:p-8">
+// ✅ Good
+<button onClick={handleClick} aria-label="Close dialog">
+  <XIcon />
+</button>
 
-// ❌ Bad - Inconsistent, desktop-first
-<div className="lg:p-5 md:p-7 p-3">
+// ❌ Bad
+<div onClick={handleClick}>
+  <XIcon />
+</div>
 ```
 
-#### Code Organization
+### Performance
+- Use Next.js Image component for images
+- Lazy load components when appropriate
+- Minimize client-side JavaScript
+- Use React Server Components by default
+
+---
+
+## API Routes
+
+### Structure
+- Place in `app/api/[name]/route.ts`
+- Export named functions: `GET`, `POST`, `PUT`, `DELETE`
+- Use Next.js `NextRequest` and `NextResponse`
+
+### Error Handling
+```typescript
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    // Process request
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
 ```
-app/
-├── api/           # API routes
-│   ├── checkout/
-│   └── notify/
-├── globals.css    # Global styles
-├── layout.tsx     # Root layout
-└── page.tsx       # Pages
 
-components/
-├── Hero.tsx       # Feature components
-├── CourseCard.tsx # Reusable components
-└── Footer.tsx
+### Security
+- Validate all inputs
+- Use environment variables for secrets
+- Never expose API keys client-side
+- Implement rate limiting for production
 
-public/
-└── avatar.jpg     # Static assets
+---
+
+## Git Standards
+
+### Commit Messages
+- Use conventional commits format:
+  - `feat:` New features
+  - `fix:` Bug fixes
+  - `docs:` Documentation changes
+  - `refactor:` Code refactoring
+  - `test:` Test changes
+  - `chore:` Build/config changes
+
+```bash
+# ✅ Good
+feat: Add materials section with workbook card
+fix: Resolve TypeScript error in checkout route
+docs: Update README with deployment steps
+
+# ❌ Bad
+updated stuff
+fixed bug
+changes
 ```
 
-#### Error Handling
-- ✅ Always handle errors gracefully
-- ✅ Provide user-friendly error messages
-- ✅ Log errors for debugging
-- ✅ Use try-catch for async operations
+### Branch Strategy
+- `master`: Production-ready code
+- Feature branches: `feature/description`
+- Bug fixes: `fix/description`
 
+### Pre-commit Checklist
+1. Run `npm run validate` (type-check, lint, build)
+2. Test manually in browser
+3. Review git diff
+4. Write clear commit message
+
+---
+
+## Testing Standards
+
+### Validation Pipeline
+Always run before committing:
+```bash
+npm run validate
+```
+
+This runs:
+1. `npm run type-check` - TypeScript compilation
+2. `npm run lint` - ESLint checks
+3. `npm run build` - Production build test
+
+### Manual Testing
+- Test in both Chrome and Safari
+- Test responsive design (mobile, tablet, desktop)
+- Test all interactive elements
+- Verify external links open in new tabs
+
+---
+
+## Dependencies
+
+### Adding New Dependencies
+1. Justify the need (avoid bloat)
+2. Check bundle size impact
+3. Verify TypeScript support
+4. Add to appropriate section:
+   - `dependencies`: Runtime requirements
+   - `devDependencies`: Build/dev tools
+
+### Current Stack
+- **Framework**: Next.js 15.5 with App Router
+- **UI**: React 19, Tailwind CSS 4, DaisyUI
+- **Language**: TypeScript 5
+- **Payments**: Stripe
+- **Linting**: ESLint 9
+
+---
+
+## Error Handling
+
+### Client-Side
 ```typescript
 // ✅ Good
 try {
-  const response = await fetch('/api/checkout');
+  const response = await fetch('/api/endpoint');
   if (!response.ok) {
-    throw new Error('Payment failed');
+    throw new Error('Request failed');
   }
   const data = await response.json();
   return data;
 } catch (error) {
-  console.error('Checkout error:', error);
-  toast.error('Payment failed. Please try again.');
-  return null;
+  console.error('Error fetching data:', error);
+  // Show user-friendly error message
 }
-
-// ❌ Bad
-const data = await fetch('/api/checkout').then(r => r.json());
 ```
 
-#### Accessibility (WCAG 2.1 AA)
-- ✅ Semantic HTML elements
-- ✅ Proper heading hierarchy (h1 → h2 → h3)
-- ✅ ARIA labels for interactive elements
-- ✅ Keyboard navigation support
-- ✅ Sufficient color contrast
-- ✅ Alt text for images
-
+### Server-Side
 ```typescript
 // ✅ Good
-<button
-  aria-label="Purchase course"
-  onClick={handlePurchase}
-  className="btn btn-primary"
->
-  Buy Now
-</button>
-
-// ❌ Bad
-<div onClick={handlePurchase}>Buy Now</div>
+export async function GET() {
+  try {
+    // Business logic
+    return NextResponse.json({ data });
+  } catch (error) {
+    console.error('Server error:', error);
+    return NextResponse.json(
+      { error: 'Failed to process request' },
+      { status: 500 }
+    );
+  }
+}
 ```
-
-### 4. **TEST** 🧪
-Before committing, verify everything works:
-
-#### Pre-Commit Checklist
-- [ ] Run `npm run validate` (type-check + lint + build)
-- [ ] Test in browser (desktop & mobile)
-- [ ] Check console for errors/warnings
-- [ ] Test all user interactions
-- [ ] Verify accessibility (keyboard navigation)
-- [ ] Check responsive design
-- [ ] Review code for best practices
-
-#### Testing Commands
-```bash
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-
-# Build
-npm run build
-
-# All checks
-npm run validate
-```
-
-#### Manual Testing Checklist
-- [ ] Does it work on Chrome?
-- [ ] Does it work on mobile (responsive)?
-- [ ] Are all links working?
-- [ ] Are all buttons working?
-- [ ] Does it handle errors gracefully?
-- [ ] Is loading state handled?
-- [ ] Are success messages shown?
-
-## 🚫 Common Mistakes to Avoid
-
-### TypeScript
-```typescript
-// ❌ BAD - Using any
-const handleClick = (data: any) => {}
-
-// ✅ GOOD - Proper typing
-const handleClick = (data: FormData) => {}
-```
-
-### React
-```typescript
-// ❌ BAD - Unescaped apostrophes
-<h1>I'm a developer</h1>
-
-// ✅ GOOD - Escaped entities
-<h1>I&apos;m a developer</h1>
-```
-
-### Images
-```typescript
-// ❌ BAD - Regular img tag
-<img src="/photo.jpg" />
-
-// ✅ GOOD - Next.js Image
-import Image from 'next/image';
-<Image src="/photo.jpg" width={500} height={300} alt="Description" />
-```
-
-### API Routes
-```typescript
-// ❌ BAD - No error handling, no environment check
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-// ✅ GOOD - Safe initialization
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
-  : null;
-```
-
-## 📦 Git Workflow
-
-### Commit Message Format
-```
-<type>: <short description>
-
-<detailed description if needed>
-
-- Added/Changed/Fixed item 1
-- Added/Changed/Fixed item 2
-```
-
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `refactor`: Code refactoring
-- `style`: Styling changes
-- `docs`: Documentation
-- `test`: Tests
-- `chore`: Build/config changes
-
-**Example:**
-```
-feat: Add contact form with validation
-
-Implemented new contact form component with:
-- Email validation
-- Rate limiting
-- Error handling
-- Success notifications
-```
-
-### Before Pushing
-```bash
-# 1. Validate code
-npm run validate
-
-# 2. If validation passes, commit
-git add .
-git commit -m "your message"
-
-# 3. Push (GitHub Actions will test again)
-git push
-```
-
-## 🔧 Environment Setup
-
-### Required Files
-- `.env.local` - Local environment variables (never commit!)
-- `.env.example` - Template for environment variables (commit this)
-
-### Environment Variables
-```bash
-# .env.local (never commit)
-STRIPE_SECRET_KEY=sk_test_actual_key_here
-NEXT_PUBLIC_URL=http://localhost:3000
-
-# .env.example (commit this)
-STRIPE_SECRET_KEY=sk_test_your_key_here
-NEXT_PUBLIC_URL=http://localhost:3000
-```
-
-## 📊 Code Quality Metrics
-
-### Performance
-- Lighthouse score: 90+ for all categories
-- First Contentful Paint: < 1.5s
-- Time to Interactive: < 3.5s
-- Cumulative Layout Shift: < 0.1
-
-### Accessibility
-- WCAG 2.1 AA compliance
-- Keyboard navigation works
-- Screen reader friendly
-- Color contrast ratio ≥ 4.5:1
-
-### Best Practices
-- No console errors in production
-- No TypeScript errors
-- ESLint warnings resolved
-- Proper error handling
-- Loading states for async operations
-
-## 🎯 Production Readiness Checklist
-
-Before deploying:
-- [ ] All tests pass locally (`npm run validate`)
-- [ ] GitHub Actions CI passes
-- [ ] Tested on multiple browsers
-- [ ] Tested on mobile devices
-- [ ] No console errors or warnings
-- [ ] Environment variables set in deployment platform
-- [ ] Performance tested (Lighthouse)
-- [ ] Accessibility tested
-- [ ] Error handling verified
-- [ ] Loading states implemented
-- [ ] Success/error messages shown to users
-
-## 📚 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Best Practices](https://react.dev/learn)
-- [Tailwind CSS](https://tailwindcss.com/docs)
-- [DaisyUI Components](https://daisyui.com/components/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/)
-- [WCAG Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 
 ---
 
-**Remember: Quality over speed. Take time to do it right the first time.**
+## Documentation
+
+### Code Comments
+- Use comments sparingly (code should be self-documenting)
+- Comment "why" not "what"
+- Use JSDoc for public APIs
+
+```typescript
+// ✅ Good
+// Fallback to # to prevent navigation error when URL is not configured
+const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || "#";
+
+// ❌ Bad
+// Set the booking URL variable
+const bookingUrl = process.env.NEXT_PUBLIC_BOOKING_URL || "#";
+```
+
+### README Updates
+- Update README for significant changes
+- Document new environment variables
+- Include setup instructions for new features
+
+---
+
+## Best Practices
+
+### DRY (Don't Repeat Yourself)
+- Extract reusable components
+- Create utility functions for common operations
+- Use data files for repeated content
+
+### KISS (Keep It Simple, Stupid)
+- Favor simple solutions
+- Avoid premature optimization
+- Write readable code over clever code
+
+### YAGNI (You Aren't Gonna Need It)
+- Don't add functionality until needed
+- Remove unused code and dependencies
+- Keep components focused and single-purpose
+
+### Component Composition
+```typescript
+// ✅ Good - Composable
+<Card>
+  <CardHeader title="Service" />
+  <CardBody>Content</CardBody>
+</Card>
+
+// ❌ Bad - Monolithic
+<ComplexCard title="Service" body="Content" hasHeader hasFooter />
+```
+
+---
+
+## Performance Checklist
+
+- [ ] Use Next.js Image component
+- [ ] Optimize images (WebP, correct sizes)
+- [ ] Minimize JavaScript bundles
+- [ ] Use Server Components by default
+- [ ] Implement proper caching strategies
+- [ ] Lazy load below-the-fold content
+- [ ] Monitor Core Web Vitals
+
+---
+
+## Accessibility Checklist
+
+- [ ] Semantic HTML elements
+- [ ] Proper heading hierarchy
+- [ ] Alt text for images
+- [ ] ARIA labels for interactive elements
+- [ ] Keyboard navigation works
+- [ ] Sufficient color contrast
+- [ ] Focus indicators visible
+- [ ] Screen reader tested
+
+---
+
+## Questions?
+
+When in doubt:
+1. Check existing code for patterns
+2. Follow Next.js and React best practices
+3. Prioritize TypeScript safety
+4. Run `npm run validate` frequently
+5. Ask for code review
+
+**Remember**: Code is read more often than written. Optimize for readability and maintainability.

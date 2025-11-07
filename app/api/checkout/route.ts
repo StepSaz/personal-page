@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: "2025-09-30.clover",
-    })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY)
   : null;
 
 export async function POST(req: NextRequest) {
@@ -16,14 +14,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { priceId, courseName } = await req.json();
+    const { productType } = await req.json();
 
-    if (!priceId || !courseName) {
+    if (!productType) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing product type" },
         { status: 400 }
       );
     }
+
+    // TODO: Replace with actual Stripe Price IDs from env
+    const priceId = process.env.STRIPE_WORKBOOK_PRICE_ID || "price_placeholder";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -34,10 +36,10 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/?canceled=true`,
+      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/?canceled=true`,
       metadata: {
-        courseName,
+        productType,
       },
     });
 

@@ -1,223 +1,147 @@
-# Stepan Sazanovets - Personal Portfolio & Course Platform
+# Stepan Sazanavets - Portfolio & Digital Products
 
-A modern, professional personal website built with Next.js, serving as both a portfolio and course/mentorship platform for Business Analysts.
+Portfolio and workbooks platform for Business Analysts and Product Owners specializing in AI integration.
 
-## 🚀 Live Site
-**[View Live Site](https://your-vercel-url.vercel.app)** (Update with your actual URL)
+## 🚀 Quick Start
 
-## 📋 Development Standards
-
-**This project follows strict code quality standards.**
-
-Before contributing, read:
-- **[CODE_STANDARDS.md](./CODE_STANDARDS.md)** - Complete development guidelines
-- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
-
-### APIT Workflow
-Every change must follow: **Analyze → Plan → Implement → Test**
-
-### Pre-Commit Requirements
 ```bash
-npm run validate  # Must pass before committing ✅
-```
-
-## Features
-
-- **Modern Design**: Clean, glassmorphic design with soft pastel gradients
-- **Responsive**: Fully responsive for mobile, tablet, and desktop
-- **Course Platform**: Expandable course cards with detailed curriculum
-- **Stripe Integration**: Ready for course payments via Stripe Checkout
-- **Email Notifications**: API endpoint for course launch notifications
-- **Mentorship Program**: Dedicated section for 1-on-1 mentorship
-- **Accessibility**: WCAG 2.1 AA compliant
-- **SEO Optimized**: Meta tags and Open Graph for social sharing
-
-## Tech Stack
-
-- **Framework**: Next.js 15 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + DaisyUI
-- **Payments**: Stripe
-- **Deployment**: Netlify
-- **Fonts**: Geist Sans & Geist Mono
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 20 or higher
-- npm or yarn
-- Stripe account (for payment processing)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd personal-page
-```
-
-2. Install dependencies:
-```bash
+# 1. Install dependencies
 npm install
-```
 
-3. Set up environment variables:
-```bash
+# 2. Set up environment variables
 cp .env.example .env.local
-```
+# Edit .env.local with your API keys
 
-4. Edit `.env.local` with your credentials:
-```env
-STRIPE_SECRET_KEY=sk_test_your_secret_key_here
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
-NEXT_PUBLIC_URL=http://localhost:3000
-```
-
-5. Run the development server:
-```bash
+# 3. Start development server
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) to view the site.
+Open [http://localhost:3000](http://localhost:3000)
 
-## Project Structure
+## 📋 What's This?
+
+- **Portfolio**: Showcase BA/PO expertise in AI workflows
+- **Digital Products**: Sell workbooks via Stripe
+- **Free Materials**: Lead magnets (PDF guides, catalogues)
+- **Consultations**: Booking integration for 1-on-1 sessions
+
+See [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) for detailed product vision.
+
+## 🛠 Tech Stack
+
+- **Next.js 15.5.4** (React 19, TypeScript, App Router)
+- **Tailwind CSS 4** + DaisyUI
+- **Stripe** (payments)
+- **Vercel** (hosting)
+
+## 📁 Project Structure
 
 ```
-personal-page/
-├── app/
-│   ├── api/
-│   │   ├── checkout/      # Stripe checkout API route
-│   │   └── notify/        # Email notification API route
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout with metadata
-│   └── page.tsx           # Main page
-├── components/
-│   ├── Hero.tsx           # Hero section with profile
-│   ├── CoursesSection.tsx # Courses and mentorship cards
-│   ├── CourseCard.tsx     # Reusable course card component
-│   ├── GameSection.tsx    # Game promotional section
-│   └── Footer.tsx         # Footer component
-├── public/
-│   └── avatar.png         # Profile avatar (replace with your photo)
-├── tailwind.config.ts     # Tailwind + DaisyUI configuration
-├── netlify.toml           # Netlify deployment configuration
-└── package.json
+app/
+├── api/
+│   ├── checkout/          # Stripe checkout
+│   └── notify/            # Email notifications
+├── globals.css
+├── layout.tsx
+└── page.tsx               # Main landing page
+
+components/
+├── MaterialCard.tsx       # Dynamic material cards
+├── MaterialsSection.tsx   # Free & paid materials grid
+├── HeroWithServices.tsx   # Hero + services section
+├── GameSection.tsx
+├── Outro.tsx
+└── ...
+
+data/
+└── free-materials.ts      # Config for all materials (edit here!)
+
+public/
+└── rick-morty-portrait.png
 ```
 
-## Customization
+## 🔧 Configuration
 
-### Update Profile Information
+### Required Environment Variables
 
-Edit `components/Hero.tsx`:
-- Replace avatar image in `public/avatar.png`
-- Update LinkedIn URL
-- Update Telegram handle
-- Modify bio text
-
-### Configure Courses
-
-Edit `components/CoursesSection.tsx`:
-- Update course titles and descriptions
-- Modify pricing
-- Add/remove curriculum items
-- Change availability status
-
-### Stripe Setup
-
-1. Create a Stripe account at [stripe.com](https://stripe.com)
-2. Get your API keys from the Stripe Dashboard
-3. Create product prices in Stripe
-4. Update `priceId` in course purchase handlers
-
-### Email Notifications
-
-The notification system is stubbed out. To implement:
-1. Choose an email service (SendGrid, Mailgun, AWS SES)
-2. Update `app/api/notify/route.ts`
-3. Add API credentials to `.env.local`
-
-## Deployment to Netlify
-
-### Option 1: Deploy via Netlify CLI
-
-1. Install Netlify CLI:
 ```bash
-npm install -g netlify-cli
+# Stripe
+STRIPE_SECRET_KEY=sk_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
+
+# Email Service (Resend/SendGrid)
+EMAIL_API_KEY=...
+EMAIL_FROM=noreply@yourdomain.com
+
+# Booking
+NEXT_PUBLIC_BOOKING_URL=https://cal.com/yourname
+
+# App URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
-2. Login to Netlify:
+Add these to:
+- `.env.local` for development
+- Vercel project settings for production
+
+### Adding New Materials
+
+Edit [data/free-materials.ts](data/free-materials.ts):
+
+```typescript
+export const freeMaterials: FreeMaterial[] = [
+  {
+    id: 'new-material',
+    title: 'Your Title',
+    description: 'Description...',
+    type: 'email-download', // or 'external-link', 'purchase', 'coming-soon'
+    emailType: 'new-material-type',
+    order: 4,
+  },
+];
+```
+
+Component auto-renders new materials. No code changes needed!
+
+## 🧪 Development Commands
+
 ```bash
-netlify login
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run type-check   # TypeScript validation
+npm run lint         # ESLint
+npm run validate     # All checks (type + lint + build)
 ```
 
-3. Initialize and deploy:
-```bash
-netlify init
-netlify deploy --prod
-```
+**Before committing**: Run `npm run validate` ✅
 
-### Option 2: Deploy via Git
+## 🚀 Deployment (Vercel)
 
-1. Push your code to GitHub/GitLab
-2. Connect repository in Netlify Dashboard
-3. Configure build settings:
-   - Build command: `npm run build`
-   - Publish directory: `.next`
-4. Add environment variables in Netlify Dashboard
-5. Deploy!
+1. Push to GitHub
+2. Import repository in Vercel
+3. Add environment variables
+4. Deploy!
 
-### Environment Variables on Netlify
+Vercel auto-deploys on every `git push`.
 
-Add these in Netlify Dashboard → Site Settings → Environment Variables:
-- `STRIPE_SECRET_KEY`
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- `NEXT_PUBLIC_URL` (your Netlify URL)
+## 📚 Documentation
 
-## Development
+- [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) - Product vision, services, configuration
+- [.github/workflows/test.yml](.github/workflows/test.yml) - CI pipeline
 
-### Running Tests
-```bash
-npm run test
-```
+## 🎯 Pre-Launch Checklist
 
-### Type Checking
-```bash
-npm run type-check
-```
+- [ ] Configure Stripe products and price IDs
+- [ ] Set up email service (Resend/SendGrid)
+- [ ] Add booking URL (Cal.com/Calendly)
+- [ ] Upload CV and free PDF to `/public/`
+- [ ] Update all external links
+- [ ] Test purchase flow
+- [ ] Test email delivery
+- [ ] Verify mobile responsiveness
 
-### Linting
-```bash
-npm run lint
-```
+See full checklist in [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md).
 
-### Build for Production
-```bash
-npm run build
-```
-
-## Accessibility
-
-This site follows WCAG 2.1 AA standards:
-- Semantic HTML
-- Proper heading hierarchy
-- Keyboard navigation
-- ARIA labels
-- Sufficient color contrast
-- Focus indicators
-
-## Performance
-
-- Lighthouse score target: 90+
-- Optimized images with Next.js Image
-- Lazy loading
-- Font optimization
-- Code splitting
-
-## License
+## 📄 License
 
 © 2025 Stepan Sazanavets. All rights reserved.
-
-## Support
-
-For issues or questions, please open an issue on GitHub.

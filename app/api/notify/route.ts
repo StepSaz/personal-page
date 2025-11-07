@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, courseName } = await req.json();
+    const { email, type } = await req.json();
 
-    if (!email || !courseName) {
+    if (!email || !type) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -20,24 +20,27 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // TODO: Implement email notification service
-    // This could be SendGrid, Mailgun, AWS SES, etc.
-    // For now, just log the notification request
-    console.log(`Notification requested for ${courseName} by ${email}`);
+    // Log the signup
+    console.log(`Email signup - Type: ${type}, Email: ${email}`);
 
-    // In production, you would:
-    // 1. Save the email to a database
-    // 2. Add to a mailing list
-    // 3. Send a confirmation email
+    // TODO: Implement email service (Resend/SendGrid)
+    // Based on type:
+    // - "free-pdf": Send PDF download link
+    // - "early-access": Add to early access list
+
+    // For now, simulate success
+    const message = type === "free-pdf"
+      ? "Check your email for the PDF download link!"
+      : "You're on the list! We'll notify you when it's ready.";
 
     return NextResponse.json({
       success: true,
-      message: "You'll be notified when this course is available!"
+      message,
     });
   } catch (error) {
     console.error("Notification error:", error);
     return NextResponse.json(
-      { error: "Failed to register notification" },
+      { error: "Failed to process request" },
       { status: 500 }
     );
   }
